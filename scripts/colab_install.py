@@ -121,6 +121,7 @@ def install(
   runcmd([
       os.path.join(conda_path, "bin", "conda"), "config", "--set", "always_yes", "yes"
   ])
+  logger.info("Accept TOS for main and r channels...")
   runcmd([
       os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--override-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
   ])
