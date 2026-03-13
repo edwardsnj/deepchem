@@ -122,10 +122,10 @@ def install(
       os.path.join(conda_path, "bin", "conda"), "config", "--set", "always_yes", "yes"
   ])
   runcmd([
-      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
+      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--override-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
   ])
   runcmd([
-      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/r"
+      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--override-channels", "--channel", "https://repo.anaconda.com/pkgs/r"
   ])
     
   logger.info("installing openmm, pdbfixer")
