@@ -105,14 +105,26 @@ def install(
   subprocess.check_call(["bash", file_name, "-b", "-p", conda_path])
   logger.info('done')
 
+  channels = list(set(default_channels + additional_channels))
+  logger.info("Channels: " + ", ".join(channels))
+
+  def runcmd(cmd):
+      try:
+          res = subprocess.run(cmd, check=True, capture_output=True, text=True)
+          if res.stdout:
+              logger.info(res.stdout)
+      except subprocess.CalledProcessError as e:
+          logger.error(f"Command failed with error: {e.stderr}\nStandard output: {e.stdout}")
+          raise
+    
   logger.info("Configuring conda (always_yes for TOS/prompts)")
-  subprocess.check_call([
+  runcmd([
       os.path.join(conda_path, "bin", "conda"), "config", "--set", "always_yes", "yes"
   ])
-  subprocess.check_call([
+  runcmd([
       os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
   ])
-  subprocess.check_call([
+  runcmd([
       os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/r"
   ])
     
