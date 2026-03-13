@@ -104,7 +104,11 @@ def install(
   logger.info('installing miniconda to {}'.format(conda_path))
   subprocess.check_call(["bash", file_name, "-b", "-p", conda_path])
   logger.info('done')
-    
+
+  logger.info("Configuring conda (always_yes for TOS/prompts)")
+  subprocess.check_call([
+      os.path.join(conda_path, "bin", "conda"), "config", "--set", "always_yes", "yes"
+  ])
   subprocess.check_call([
       os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
   ])
@@ -116,7 +120,7 @@ def install(
   channels = list(set(default_channels + additional_channels))
   for channel in channels:
     subprocess.check_call([
-        os.path.join(conda_path, "bin", "conda"), "config", "--append",
+        os.path.join(conda_path, "bin", "conda"), "config", "--add",
         "channels", channel
     ])
     logger.info("added {} to channels".format(channel))
