@@ -104,19 +104,19 @@ def install(
   logger.info('installing miniconda to {}'.format(conda_path))
   subprocess.check_call(["bash", file_name, "-b", "-p", conda_path])
   logger.info('done')
-
-  logger.info('accepting conda TOS')
-  os.environ["CONDA_PLUGINS_AUTO_ACCEPT_TOS"] = "true"
-  try:
-    subprocess.check_call([os.path.join(conda_path, "bin", "conda"), "config", "--set", "plugins.auto_accept_tos", "yes"])
-  except subprocess.CalledProcessError:
-    pass # Failsafe for older conda versions that don't recognize this config flag
+    
+  subprocess.check_call([
+      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/main"
+  ])
+  subprocess.check_call([
+      os.path.join(conda_path, "bin", "conda"), "tos", "accept", "--orverride-channels", "--channel", "https://repo.anaconda.com/pkgs/r"
+  ])
     
   logger.info("installing openmm, pdbfixer")
   channels = list(set(default_channels + additional_channels))
   for channel in channels:
     subprocess.check_call([
-        os.path.join(conda_path, "bin", "conda"), "config", "--add",
+        os.path.join(conda_path, "bin", "conda"), "config", "--append",
         "channels", channel
     ])
     logger.info("added {} to channels".format(channel))
