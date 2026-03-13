@@ -69,7 +69,7 @@ def install(
 
   if add_python_path and python_path not in sys.path:
     logger.info("add {} to PYTHONPATH".format(python_path))
-    sys.path.append(python_path)
+    sys.path.insert(0,python_path)
 
   is_installed = []
   packages = list(set(default_packages + additional_packages))
